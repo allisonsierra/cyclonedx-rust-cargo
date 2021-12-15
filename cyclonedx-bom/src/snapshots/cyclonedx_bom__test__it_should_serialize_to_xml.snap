@@ -1,0 +1,7 @@
+---
+source: cyclonedx-bom/src/lib.rs
+expression: actual_xml
+
+---
+<?xml version="1.0" encoding="utf-8"?>
+<Bom xmlns="ns:http://cyclonedx.org/schema/bom/1.3" version="1" serialNumber="fake-uuid" />
