@@ -1,5 +1,5 @@
 ---
-source: cyclonedx-bom/src/lib.rs
+source: cyclonedx-bom/src/spec/v1_3/mod.rs
 expression: actual
 
 ---
