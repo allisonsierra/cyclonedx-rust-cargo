@@ -1,0 +1,278 @@
+---
+source: cyclonedx-bom/src/specs/v1_3/mod.rs
+expression: actual
+
+---
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.3",
+  "version": 1,
+  "serialNumber": "fake-uuid",
+  "metadata": {
+    "timestamp": "time",
+    "tools": [
+      {
+        "vendor": "vendor",
+        "name": "name",
+        "version": "version",
+        "hashes": [
+          {
+            "alg": "hash algorithm",
+            "content": "hash value"
+          }
+        ]
+      }
+    ],
+    "authors": [
+      {
+        "name": "name",
+        "email": "email",
+        "phone": "phone"
+      }
+    ],
+    "manufacture": {
+      "name": "name",
+      "url": [
+        "url"
+      ],
+      "contact": [
+        {
+          "name": "name",
+          "email": "email",
+          "phone": "phone"
+        }
+      ]
+    },
+    "supplier": {
+      "name": "name",
+      "url": [
+        "url"
+      ],
+      "contact": [
+        {
+          "name": "name",
+          "email": "email",
+          "phone": "phone"
+        }
+      ]
+    },
+    "licenses": [
+      {
+        "license": {
+          "name": "MIT",
+          "text": {
+            "contentType": "content type",
+            "encoding": "encoding",
+            "content": "legal document"
+          },
+          "url": "url"
+        }
+      }
+    ],
+    "properties": [
+      {
+        "name": "property name",
+        "value": "property value"
+      }
+    ]
+  },
+  "components": [
+    {
+      "type": "component type",
+      "mime-type": "mime type",
+      "bom-ref": "bom ref",
+      "supplier": {
+        "name": "name",
+        "url": [
+          "url"
+        ],
+        "contact": [
+          {
+            "name": "name",
+            "email": "email",
+            "phone": "phone"
+          }
+        ]
+      },
+      "author": "author",
+      "publisher": "publisher",
+      "group": "group",
+      "name": "name",
+      "version": "version",
+      "description": "description",
+      "scope": "scope",
+      "hashes": [
+        {
+          "alg": "algorithm",
+          "content": "hash value"
+        }
+      ],
+      "licenses": [
+        {
+          "expression": "license expression"
+        }
+      ],
+      "copyright": "copyright",
+      "cpe": "cpe",
+      "purl": "purl",
+      "swid": {
+        "tagId": "tag ID",
+        "name": "name",
+        "version": "version",
+        "tagVersion": 1,
+        "patch": true,
+        "text": {
+          "contentType": "content type",
+          "encoding": "encoding",
+          "content": "content"
+        },
+        "url": "url"
+      },
+      "modified": true,
+      "pedigree": {
+        "ancestors": [],
+        "descendants": [],
+        "variants": [],
+        "commits": [
+          {
+            "uid": "uid",
+            "url": "url",
+            "author": {
+              "timestamp": "timestamp",
+              "name": "name",
+              "email": "email"
+            },
+            "committer": {
+              "timestamp": "timestamp",
+              "name": "name",
+              "email": "email"
+            },
+            "message": "message"
+          }
+        ],
+        "patches": [
+          {
+            "type": "patch type",
+            "diff": {
+              "text": {
+                "contentType": "content type",
+                "encoding": "encoding",
+                "content": "content"
+              },
+              "url": "url"
+            },
+            "resolves": [
+              {
+                "type": "issue type",
+                "id": "id",
+                "name": "name",
+                "description": "description",
+                "source": {
+                  "name": "name",
+                  "url": "url"
+                },
+                "references": [
+                  "reference"
+                ]
+              }
+            ]
+          }
+        ],
+        "notes": "notes"
+      },
+      "externalReferences": [
+        {
+          "type": "external reference type",
+          "url": "url",
+          "comment": "comment",
+          "hashes": []
+        }
+      ],
+      "properties": [
+        {
+          "name": "property name",
+          "value": "property value"
+        }
+      ],
+      "components": [],
+      "evidence": {
+        "licenses": [],
+        "copyright": [
+          [
+            "copyright"
+          ]
+        ]
+      }
+    }
+  ],
+  "services": [
+    {
+      "bom-ref": "bom ref",
+      "provider": {
+        "name": "name",
+        "url": [
+          "url"
+        ],
+        "contact": [
+          {
+            "name": "name",
+            "email": "email",
+            "phone": "phone"
+          }
+        ]
+      },
+      "group": "group",
+      "name": "name",
+      "version": "version",
+      "description": "description",
+      "endpoints": [
+        "endpoint"
+      ],
+      "authenticated": true,
+      "x-trust-boundary": true,
+      "data": [
+        {
+          "flow": "flow",
+          "classification": "value"
+        }
+      ],
+      "licenses": [],
+      "externalReferences": [],
+      "properties": [],
+      "services": []
+    }
+  ],
+  "externalReferences": [
+    {
+      "type": "external reference type",
+      "url": "url",
+      "comment": "comment",
+      "hashes": []
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "dependency ref",
+      "dependsOn": [
+        "depends on"
+      ]
+    }
+  ],
+  "compositions": [
+    {
+      "aggregate": "aggregate",
+      "assemblies": [
+        "bom reference"
+      ],
+      "dependencies": [
+        "bom reference"
+      ]
+    }
+  ],
+  "properties": [
+    {
+      "name": "property name",
+      "value": "property value"
+    }
+  ]
+}

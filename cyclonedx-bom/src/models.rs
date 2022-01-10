@@ -1,5 +1,6 @@
 use crate::external_models::{
     normalized_string::NormalizedString,
+    spdx::SpxdIdentifier,
     uri::{Purl, Uri},
 };
 
@@ -32,17 +33,17 @@ impl Default for Bom {
     }
 }
 
-#[derive(Debug, Default, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct AttachedText {
     pub content_type: Option<NormalizedString>,
     pub encoding: Option<Encoding>,
-    pub value: String,
+    pub content: String,
 }
 
-#[derive(Debug, Default, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct BomReference(String);
 
-#[derive(Debug, Default, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct Commit {
     pub uid: Option<NormalizedString>,
     pub url: Option<Uri>,
@@ -97,7 +98,7 @@ pub struct Copyright(Vec<String>);
 #[derive(Debug, PartialEq)]
 pub struct DataClassification {
     pub flow: DataFlowType,
-    pub value: NormalizedString,
+    pub classification: NormalizedString,
 }
 
 #[derive(Debug, PartialEq)]
@@ -158,7 +159,7 @@ pub struct License {
 
 #[derive(Debug, PartialEq)]
 pub enum LicenseIdentifier {
-    SpdxId(spdx::expression::Expression),
+    SpdxId(SpxdIdentifier),
     Name(NormalizedString),
 }
 
@@ -185,7 +186,7 @@ pub struct OrganizationalContact {
 pub struct OrganizationalEntity {
     pub name: Option<NormalizedString>,
     pub url: Option<Vec<Uri>>,
-    pub contact: Option<Vec<OrganizationalEntity>>,
+    pub contact: Option<Vec<OrganizationalContact>>,
 }
 
 #[derive(Debug, PartialEq)]
@@ -198,7 +199,7 @@ pub struct Patch {
 #[derive(Debug, PartialEq)]
 pub struct Pedigree {
     pub ancestors: Option<Vec<Component>>,
-    pub decendents: Option<Vec<Component>>,
+    pub decendants: Option<Vec<Component>>,
     pub variants: Option<Vec<Component>>,
     pub commits: Option<Vec<Commit>>,
     pub patches: Option<Vec<Patch>>,
@@ -206,9 +207,7 @@ pub struct Pedigree {
 }
 
 #[derive(Debug, PartialEq)]
-pub struct Properties {
-    pub properties: Vec<Property>,
-}
+pub struct Properties(Vec<Property>);
 
 #[derive(Debug, PartialEq)]
 pub struct Property {
