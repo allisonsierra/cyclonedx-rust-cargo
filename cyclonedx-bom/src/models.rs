@@ -1,6 +1,6 @@
 use crate::external_models::{
     normalized_string::NormalizedString,
-    spdx::SpxdIdentifier,
+    spdx::SpdxIdentifier,
     uri::{Purl, Uri},
 };
 
@@ -159,7 +159,7 @@ pub struct License {
 
 #[derive(Debug, PartialEq)]
 pub enum LicenseIdentifier {
-    SpdxId(SpxdIdentifier),
+    SpdxId(SpdxIdentifier),
     Name(NormalizedString),
 }
 
