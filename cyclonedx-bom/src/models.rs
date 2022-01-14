@@ -35,13 +35,27 @@ impl Default for Bom {
 
 #[derive(Debug, PartialEq)]
 pub struct AttachedText {
-    pub content_type: Option<NormalizedString>,
-    pub encoding: Option<Encoding>,
-    pub content: String,
+    pub(crate) content_type: Option<NormalizedString>,
+    pub(crate) encoding: Option<Encoding>,
+    pub(crate) content: String,
+}
+
+impl AttachedText {
+    /// Construct a new `AttachedText`
+    ///
+    /// - `content_type` - Content type of the attached text (default: `"text/plain"`)
+    /// - `content` - Raw content, which will be base64 encoded when added to the BOM
+    pub fn new<T: AsRef<[u8]>>(content_type: Option<NormalizedString>, content: T) -> Self {
+        Self {
+            content_type,
+            encoding: Some(Encoding::Base64),
+            content: base64::encode(content),
+        }
+    }
 }
 
 #[derive(Debug, PartialEq)]
-pub struct BomReference(String);
+pub struct BomReference(pub(crate) String);
 
 #[derive(Debug, PartialEq)]
 pub struct Commit {
@@ -292,8 +306,27 @@ pub enum DataFlowType {
 }
 
 #[derive(Debug, PartialEq)]
-pub enum Encoding {
+pub(crate) enum Encoding {
     Base64,
+    UnknownEncoding(String),
+}
+
+impl From<String> for Encoding {
+    fn from(s: String) -> Self {
+        match &*s {
+            "base64" => Self::Base64,
+            _ => Self::UnknownEncoding(s),
+        }
+    }
+}
+
+impl From<Encoding> for String {
+    fn from(e: Encoding) -> Self {
+        match e {
+            Encoding::Base64 => "base64".to_string(),
+            Encoding::UnknownEncoding(ue) => ue,
+        }
+    }
 }
 
 #[derive(Debug, PartialEq)]
@@ -362,3 +395,24 @@ pub enum Scope {
 
 #[derive(Debug, PartialEq)]
 pub struct UrnUuid(uuid::Uuid);
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn it_should_construct_attached_text() {
+        let actual = AttachedText::new(
+            Some(NormalizedString::new("text/plain")),
+            "this text is plain",
+        );
+        assert_eq!(
+            actual,
+            AttachedText {
+                content_type: Some(NormalizedString::new("text/plain")),
+                encoding: Some(Encoding::Base64),
+                content: "dGhpcyB0ZXh0IGlzIHBsYWlu".to_string(),
+            }
+        )
+    }
+}

@@ -1,3 +1,5 @@
+use crate::external_models::normalized_string::NormalizedString;
+use crate::models;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -38,8 +40,40 @@ struct AttachedText {
     content: String,
 }
 
+impl From<models::AttachedText> for AttachedText {
+    fn from(other: models::AttachedText) -> Self {
+        Self {
+            content_type: other.content_type.map(|n| n.0),
+            encoding: other.encoding.map(String::from),
+            content: other.content,
+        }
+    }
+}
+
+impl From<AttachedText> for models::AttachedText {
+    fn from(other: AttachedText) -> Self {
+        Self {
+            content_type: other.content_type.map(NormalizedString::new_unchecked),
+            encoding: other.encoding.map(models::Encoding::from),
+            content: other.content,
+        }
+    }
+}
+
 #[derive(Debug, Deserialize, Serialize)]
-struct BomReference(String);
+pub(crate) struct BomReference(String);
+
+impl From<models::BomReference> for BomReference {
+    fn from(other: models::BomReference) -> Self {
+        Self(other.0)
+    }
+}
+
+impl From<BomReference> for models::BomReference {
+    fn from(other: BomReference) -> Self {
+        Self(other.0)
+    }
+}
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]

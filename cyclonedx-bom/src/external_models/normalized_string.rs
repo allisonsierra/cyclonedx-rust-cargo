@@ -1,7 +1,7 @@
 /// A string that does not contain carriage return, line feed, or tab characters.
 /// Defined via the [XML schema](https://www.w3.org/TR/xmlschema-2/#normalizedString)
 #[derive(Debug, Default, PartialEq)]
-pub struct NormalizedString(String);
+pub struct NormalizedString(pub(crate) String);
 
 impl NormalizedString {
     pub fn new(value: &str) -> Self {
