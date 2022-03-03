@@ -160,13 +160,13 @@ struct UrnUuid(String);
 
 impl From<models::UrnUuid> for UrnUuid {
     fn from(other: models::UrnUuid) -> Self {
-        Self(other.0)
+        Self(other.uuid)
     }
 }
 
 impl From<UrnUuid> for models::UrnUuid {
     fn from(other: UrnUuid) -> Self {
-        Self(other.0)
+        Self { uuid: other.0 }
     }
 }
 
@@ -262,7 +262,7 @@ pub(crate) mod test {
     pub(crate) fn corresponding_internal_model() -> models::Bom {
         models::Bom {
             version: 1,
-            serial_number: Some(models::UrnUuid("fake-uuid".to_string())),
+            serial_number: Some(models::UrnUuid{uuid: "fake-uuid".to_string()}),
             metadata: Some(corresponding_metadata()),
             components: Some(corresponding_components()),
             services: Some(corresponding_services()),

@@ -22,9 +22,16 @@ use crate::external_models::{
     spdx::SpdxIdentifier,
     uri::{Purl, Uri},
 };
-//use validator::{Validate, ValidationError};
+use lazy_static::lazy_static;
+use regex::Regex;
+use validator::{Validate};
 
-#[derive(Debug, PartialEq)]
+
+lazy_static!{
+    static ref RE_BOM_SERIAL: Regex = Regex::new(r"^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$").unwrap();
+}
+
+#[derive(Debug, PartialEq, Validate)]
 pub struct Bom {
     pub version: u32,
     pub serial_number: Option<UrnUuid>,
@@ -41,7 +48,7 @@ impl Default for Bom {
     fn default() -> Self {
         Self {
             version: 1,
-            serial_number: Some(UrnUuid(format!("urn:uuid:{}", uuid::Uuid::new_v4()))),
+            serial_number: Some(UrnUuid{ uuid: format!("urn:uuid:{}", uuid::Uuid::new_v4())}),
             metadata: None,
             components: None,
             services: None,
@@ -709,8 +716,11 @@ impl Scope {
     }
 }
 
-#[derive(Debug, PartialEq)]
-pub struct UrnUuid(pub(crate) String);
+#[derive(Debug, PartialEq, Validate)]
+pub struct UrnUuid{ 
+    #[validate(regex = "RE_BOM_SERIAL")]
+    pub(crate) uuid: String,
+}
 
 #[cfg(test)]
 mod tests {
