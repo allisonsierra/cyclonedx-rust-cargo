@@ -16,6 +16,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+use std::{borrow::Cow, collections::HashMap};
+
 use crate::external_models::{
     date_time::DateTime,
     normalized_string::NormalizedString,
@@ -24,7 +26,7 @@ use crate::external_models::{
 };
 use lazy_static::lazy_static;
 use regex::Regex;
-use validator::Validate;
+use validator::{Validate, ValidationError, ValidationErrors};
 
 #[derive(Debug, PartialEq, Validate)]
 pub struct Bom {
@@ -480,6 +482,33 @@ impl Encoding {
     }
 }
 
+impl Validate for Encoding {
+    #[allow(unused_mut)]
+    fn validate(&self) -> Result<(), ValidationErrors> {
+        let mut errors = ValidationErrors::new();
+
+        match self {
+            Encoding::UnknownEncoding(e) => {
+                let mut params = HashMap::new();
+                params.insert(
+                    Cow::Borrowed("value"),
+                    serde_json::Value::String(e.to_string()),
+                );
+                errors.add(
+                    "Encoding",
+                    ValidationError {
+                        code: Cow::Borrowed("encoding"),
+                        message: Some(Cow::Borrowed("Unknown encoding. Expected base64 encoding")),
+                        params,
+                    },
+                );
+                Err(errors)
+            }
+            _ => Ok(()),
+        }
+    }
+}
+
 #[derive(Debug, PartialEq)]
 pub enum ExternalReferenceType {
     Vcs,
@@ -759,7 +788,23 @@ mod tests {
         let urn_uuid = UrnUuid {
             uuid: "invalid_urnuuid".to_string(),
         };
-
+        // TODO - Cleanup
+        println!("{}", urn_uuid.validate().expect_err("Validation error"));
         assert_ne!(urn_uuid.validate(), Ok(()));
+    }
+
+    #[test]
+    fn it_should_validate_base64_encoding() {
+        let encoding = Encoding::Base64;
+
+        assert_eq!(encoding.validate(), Ok(()));
+    }
+
+    #[test]
+    fn it_should_error_for_unknown_encoding() {
+        let encoding = Encoding::UnknownEncoding("invalid_encoding".to_string());
+
+        println!("{}", encoding.validate().expect_err("Validation error"));
+        assert_ne!(encoding.validate(), Ok(()));
     }
 }
