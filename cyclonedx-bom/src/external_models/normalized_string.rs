@@ -50,9 +50,9 @@ impl ToString for NormalizedString {
 
 fn validate_normalized(value: &str) -> Result<(), ValidationError> {
     if value.contains("\r\n")
-        || value.contains("\r")
-        || value.contains("\n")
-        || value.contains("\t")
+        || value.contains('\r')
+        || value.contains('\n')
+        || value.contains('\t')
     {
         return Err(ValidationError::new("contains invalid whitespace"));
     }

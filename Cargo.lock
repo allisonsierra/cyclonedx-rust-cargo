@@ -430,7 +430,6 @@ version = "0.3.1"
 dependencies = [
  "base64",
  "insta",
- "lazy_static",
  "license-exprs",
  "once_cell",
  "packageurl",

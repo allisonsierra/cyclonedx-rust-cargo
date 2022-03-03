@@ -24,7 +24,8 @@ use crate::external_models::{
     spdx::SpdxIdentifier,
     uri::{Purl, Uri},
 };
-use lazy_static::lazy_static;
+
+use once_cell::sync::Lazy;
 use regex::Regex;
 use validator::{Validate, ValidationError, ValidationErrors};
 
@@ -742,11 +743,10 @@ impl Scope {
     }
 }
 
-lazy_static! {
-    static ref RE_BOM_SERIAL: Regex =
-        Regex::new(r"^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
-            .unwrap();
-}
+static RE_BOM_SERIAL: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r"^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
+        .expect("invalid regex string")
+});
 
 #[derive(Debug, PartialEq, Validate)]
 pub struct UrnUuid {
