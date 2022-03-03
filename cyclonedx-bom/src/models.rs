@@ -24,12 +24,7 @@ use crate::external_models::{
 };
 use lazy_static::lazy_static;
 use regex::Regex;
-use validator::{Validate};
-
-
-lazy_static!{
-    static ref RE_BOM_SERIAL: Regex = Regex::new(r"^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$").unwrap();
-}
+use validator::Validate;
 
 #[derive(Debug, PartialEq, Validate)]
 pub struct Bom {
@@ -48,7 +43,9 @@ impl Default for Bom {
     fn default() -> Self {
         Self {
             version: 1,
-            serial_number: Some(UrnUuid{ uuid: format!("urn:uuid:{}", uuid::Uuid::new_v4())}),
+            serial_number: Some(UrnUuid {
+                uuid: format!("urn:uuid:{}", uuid::Uuid::new_v4()),
+            }),
             metadata: None,
             components: None,
             services: None,
@@ -716,8 +713,14 @@ impl Scope {
     }
 }
 
+lazy_static! {
+    static ref RE_BOM_SERIAL: Regex =
+        Regex::new(r"^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
+            .unwrap();
+}
+
 #[derive(Debug, PartialEq, Validate)]
-pub struct UrnUuid{ 
+pub struct UrnUuid {
     #[validate(regex = "RE_BOM_SERIAL")]
     pub(crate) uuid: String,
 }
@@ -743,17 +746,20 @@ mod tests {
     }
 
     #[test]
-    fn it_should_validate_a_urnuuid(){
-        let urn_uuid = UrnUuid{ uuid: format!("urn:uuid:{}", uuid::Uuid::new_v4())};
+    fn it_should_validate_a_urnuuid() {
+        let urn_uuid = UrnUuid {
+            uuid: format!("urn:uuid:{}", uuid::Uuid::new_v4()),
+        };
 
         assert_eq!(urn_uuid.validate(), Ok(()));
     }
 
     #[test]
-    fn it_should_error_for_an_invalid_urnuuid(){
-        let urn_uuid = UrnUuid{ uuid: "invalid_urnuuid".to_string() };
+    fn it_should_error_for_an_invalid_urnuuid() {
+        let urn_uuid = UrnUuid {
+            uuid: "invalid_urnuuid".to_string(),
+        };
 
         assert_ne!(urn_uuid.validate(), Ok(()));
     }
-
 }
