@@ -22,6 +22,7 @@ use crate::external_models::{
     spdx::SpdxIdentifier,
     uri::{Purl, Uri},
 };
+//use validator::{Validate, ValidationError};
 
 #[derive(Debug, PartialEq)]
 pub struct Bom {

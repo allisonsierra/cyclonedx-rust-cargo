@@ -36,7 +36,7 @@ pub(crate) struct AttachedText {
 impl From<models::AttachedText> for AttachedText {
     fn from(other: models::AttachedText) -> Self {
         Self {
-            content_type: other.content_type.map(|n| n.0),
+            content_type: other.content_type.map(|n| n.to_string()),
             encoding: other.encoding.map(|e| e.to_string()),
             content: other.content,
         }

@@ -74,7 +74,7 @@ impl From<models::Property> for Property {
     fn from(other: models::Property) -> Self {
         Self {
             name: other.name,
-            value: other.value.0,
+            value: other.value.to_string(),
         }
     }
 }
